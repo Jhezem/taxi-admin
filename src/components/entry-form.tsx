@@ -3,7 +3,7 @@
 import type React from "react";
 
 import { useState } from "react";
-import { Plus, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -65,17 +65,6 @@ export function EntryForm() {
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center p-4">
-      {/* Floating Action Button - Mobile */}
-      <div className="fixed bottom-6 right-6 md:hidden">
-        <Button
-          onClick={() => {}}
-          size="lg"
-          className="w-14 h-14 rounded-full bg-black hover:bg-gray-800 shadow-lg"
-        >
-          <Plus className="w-6 h-6" />
-        </Button>
-      </div>
-
       <Card className="w-full max-w-md bg-white rounded-t-xl md:rounded-xl max-h-[90vh] overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 border-b">
           <CardTitle className="text-lg font-semibold">Nueva Entrada</CardTitle>

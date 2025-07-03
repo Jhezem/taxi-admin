@@ -2,6 +2,7 @@ import { EntryForm } from "@/components/entry-form";
 import LastMovements from "@/components/last-movements";
 import Header from "@/components/header";
 import BalanceCard from "@/components/balance-card";
+import Footer from "@/components/footer";
 
 export default function Home() {
   return (
@@ -14,10 +15,11 @@ export default function Home() {
 
         {/* Recent Entries */}
         <LastMovements />
-      </main>
 
-      {/* Entry Form Modal */}
-      <EntryForm />
+        {/* Entry Form Modal */}
+        <EntryForm />
+      </main>
+      <Footer />
     </div>
   );
 }
