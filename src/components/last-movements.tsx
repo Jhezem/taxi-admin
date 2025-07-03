@@ -5,9 +5,10 @@ import NoMovements from "./no-movements";
 import { Entry } from "@/types/formData";
 
 export default function LastMovements() {
-  const entries = use<Entry[]>(getAllMovements());
+  const rawEntries = use<Entry[]>(getAllMovements());
+  const entries = rawEntries.filter((entry) => entry.Monto);
 
-  if (entries.length === 0) return <p>No hay movimientos</p>;
+  if (entries.length === 0) return <NoMovements />;
 
   return (
     <Fragment>
@@ -60,8 +61,6 @@ export default function LastMovements() {
             </Card>
           ))}
       </div>
-
-      {entries.length === 0 && <NoMovements />}
     </Fragment>
   );
 }
