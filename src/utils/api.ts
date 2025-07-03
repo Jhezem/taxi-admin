@@ -21,11 +21,15 @@ export async function addEntryAction(entry: Entry) {
 }
 
 export const getTotalBalance = async (): Promise<{ balance: number }> =>
-  fetch(`${SHEET_EP}?balance=true`)
+  fetch(`${SHEET_EP}?balance=true`, {
+    next: { revalidate: 0 },
+  })
     .then((res) => res.json())
     .catch(() => 0);
 
 export const getAllMovements = async () =>
-  fetch(`${SHEET_EP}`)
+  fetch(`${SHEET_EP}`, {
+    next: { revalidate: 0 },
+  })
     .then((res) => res.json())
     .catch(() => []);
