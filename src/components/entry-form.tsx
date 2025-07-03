@@ -133,8 +133,8 @@ export function EntryForm() {
                   <SelectValue placeholder="Seleccionar conductor" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Ingreso">Luis</SelectItem>
-                  <SelectItem value="Gasto">Edwin</SelectItem>
+                  <SelectItem value="Luis">Luis</SelectItem>
+                  <SelectItem value="Edwin">Edwin</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -156,7 +156,7 @@ export function EntryForm() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Ingreso">Ingreso</SelectItem>
-                  <SelectItem value="Gasto">Gasto</SelectItem>
+                  <SelectItem value="Egreso">Egreso</SelectItem>
                 </SelectContent>
               </Select>
             </div>
