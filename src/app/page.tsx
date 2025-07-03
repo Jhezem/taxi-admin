@@ -1,103 +1,185 @@
-import Image from "next/image";
+"use client";
+
+import { useState, useEffect } from "react";
+import { Plus, DollarSign } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { EntryForm } from "@/components/entry-form";
+
+interface Entry {
+  id: string;
+  Fecha: string;
+  Vehículo: string;
+  Conductor: string;
+  "Tipo de movimiento": "Ingreso" | "Gasto";
+  Monto: number;
+  Descripción: string;
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [entries, setEntries] = useState<Entry[]>([]);
+  const [showForm, setShowForm] = useState(false);
+  const [balance, setBalance] = useState(0);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  // Función postEntry como solicita el usuario
+  const postEntry = async (entryData: Omit<Entry, "id">) => {
+    const newEntry: Entry = {
+      ...entryData,
+      id: Date.now().toString(),
+    };
+
+    setEntries((prev) => [...prev, newEntry]);
+    setShowForm(false);
+
+    // Simular llamada a API
+    console.log("Nueva entrada:", newEntry);
+  };
+
+  // Calcular balance total
+  useEffect(() => {
+    const total = entries.reduce((acc, entry) => {
+      return entry["Tipo de movimiento"] === "Ingreso"
+        ? acc + entry.Monto
+        : acc - entry.Monto;
+    }, 0);
+    setBalance(total);
+  }, [entries]);
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-100 px-4 py-4 sticky top-0 z-40">
+        <div className="flex items-center justify-between max-w-md mx-auto">
+          <h1 className="text-xl font-semibold text-gray-900">Money Tracker</h1>
+          <Button
+            onClick={() => setShowForm(true)}
+            size="sm"
+            className="bg-black hover:bg-gray-800"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <Plus className="w-4 h-4 mr-1" />
+            Nueva entrada
+          </Button>
         </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="px-4 py-6 max-w-md mx-auto">
+        {/* Balance Card */}
+        <Card className="mb-6 border-0 shadow-sm">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-gray-600 flex items-center">
+              <DollarSign className="w-4 h-4 mr-1" />
+              Balance Total
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="text-3xl font-bold text-gray-900">
+              $
+              {balance.toLocaleString("es-ES", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </div>
+            <p className="text-sm text-gray-500 mt-1">Al día de hoy</p>
+          </CardContent>
+        </Card>
+
+        {/* Recent Entries */}
+        {entries.length > 0 && (
+          <div className="space-y-3">
+            <h2 className="text-lg font-semibold text-gray-900 mb-3">
+              Movimientos recientes
+            </h2>
+            {entries
+              .slice(-5)
+              .reverse()
+              .map((entry) => (
+                <Card key={entry.id} className="border-0 shadow-sm">
+                  <CardContent className="p-4">
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span
+                            className={`inline-block w-2 h-2 rounded-full ${
+                              entry["Tipo de movimiento"] === "Ingreso"
+                                ? "bg-green-500"
+                                : "bg-red-500"
+                            }`}
+                          />
+                          <span className="font-medium text-gray-900">
+                            {entry.Vehículo}
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-600 mb-1">
+                          {entry.Conductor}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {entry.Descripción}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <div
+                          className={`font-semibold ${
+                            entry["Tipo de movimiento"] === "Ingreso"
+                              ? "text-green-600"
+                              : "text-red-600"
+                          }`}
+                        >
+                          {entry["Tipo de movimiento"] === "Ingreso"
+                            ? "+"
+                            : "-"}
+                          ${entry.Monto.toFixed(2)}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {new Date(entry.Fecha).toLocaleDateString("es-ES")}
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+          </div>
+        )}
+
+        {entries.length === 0 && (
+          <div className="text-center py-12">
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <DollarSign className="w-8 h-8 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              No hay movimientos
+            </h3>
+            <p className="text-gray-500 mb-6">
+              Comienza agregando tu primera entrada
+            </p>
+            <Button
+              onClick={() => setShowForm(true)}
+              className="bg-black hover:bg-gray-800"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Agregar entrada
+            </Button>
+          </div>
+        )}
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+
+      {/* Floating Action Button - Mobile */}
+      <div className="fixed bottom-6 right-6 md:hidden">
+        <Button
+          onClick={() => setShowForm(true)}
+          size="lg"
+          className="w-14 h-14 rounded-full bg-black hover:bg-gray-800 shadow-lg"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <Plus className="w-6 h-6" />
+        </Button>
+      </div>
+
+      {/* Entry Form Modal */}
+      <EntryForm
+        open={showForm}
+        onClose={() => setShowForm(false)}
+        onSubmit={postEntry}
+      />
     </div>
   );
 }
