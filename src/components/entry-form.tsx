@@ -42,10 +42,9 @@ export function EntryForm() {
       return;
     }
 
-    try {
-      setIsSubmitting(true);
-
-      addEntryAction(formData).then(() => {
+    setIsSubmitting(true);
+    addEntryAction(formData)
+      .then(() => {
         // Reset form
         setFormData({
           Fecha: new Date().toISOString().split("T")[0],
@@ -57,12 +56,9 @@ export function EntryForm() {
         });
         closeForm();
         router.refresh();
-      });
-    } catch (error) {
-      console.error("Error al enviar entrada:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
+      })
+      .catch((error) => console.error("Error al enviar entrada:", error))
+      .finally(() => setIsSubmitting(false));
   };
 
   if (!isOpen) return null;
