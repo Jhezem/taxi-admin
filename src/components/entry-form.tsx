@@ -3,7 +3,7 @@
 import type React from "react";
 
 import { useState } from "react";
-import { X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,29 +16,23 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Entry } from "../types/formData";
+import { addEntryAction } from "../utils/api";
+import { useFormStore } from "../store/form";
+import { useRouter } from "next/navigation";
+import Loader from "./ui/loader";
 
-interface EntryFormProps {
-  open: boolean;
-  onClose: () => void;
-  onSubmit: (data: {
-    Fecha: string;
-    Vehículo: string;
-    Conductor: string;
-    "Tipo de movimiento": "Ingreso" | "Gasto";
-    Monto: number;
-    Descripción: string;
-  }) => Promise<void>;
-}
-
-export function EntryForm({ open, onClose, onSubmit }: EntryFormProps) {
-  const [formData, setFormData] = useState({
+export function EntryForm() {
+  const [formData, setFormData] = useState<Entry>({
     Fecha: new Date().toISOString().split("T")[0],
-    Vehículo: "",
+    Vehiculo: "",
     Conductor: "",
-    "Tipo de movimiento": "" as "Ingreso" | "Gasto" | "",
-    Monto: "",
-    Descripción: "",
+    "Tipo de movimiento": "",
+    Monto: 0,
+    Descripcion: "",
   });
+  const { isOpen, closeForm } = useFormStore();
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -48,25 +42,21 @@ export function EntryForm({ open, onClose, onSubmit }: EntryFormProps) {
       return;
     }
 
-    setIsSubmitting(true);
-
     try {
-      await onSubmit({
-        ...formData,
-        "Tipo de movimiento": formData["Tipo de movimiento"] as
-          | "Ingreso"
-          | "Gasto",
-        Monto: Number.parseFloat(formData.Monto),
-      });
+      setIsSubmitting(true);
 
-      // Reset form
-      setFormData({
-        Fecha: new Date().toISOString().split("T")[0],
-        Vehículo: "",
-        Conductor: "",
-        "Tipo de movimiento": "",
-        Monto: "",
-        Descripción: "",
+      addEntryAction(formData).then(() => {
+        // Reset form
+        setFormData({
+          Fecha: new Date().toISOString().split("T")[0],
+          Vehiculo: "",
+          Conductor: "",
+          "Tipo de movimiento": "Ingreso",
+          Monto: 0,
+          Descripcion: "",
+        });
+        closeForm();
+        router.refresh();
       });
     } catch (error) {
       console.error("Error al enviar entrada:", error);
@@ -75,17 +65,28 @@ export function EntryForm({ open, onClose, onSubmit }: EntryFormProps) {
     }
   };
 
-  if (!open) return null;
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center p-4">
+      {/* Floating Action Button - Mobile */}
+      <div className="fixed bottom-6 right-6 md:hidden">
+        <Button
+          onClick={() => {}}
+          size="lg"
+          className="w-14 h-14 rounded-full bg-black hover:bg-gray-800 shadow-lg"
+        >
+          <Plus className="w-6 h-6" />
+        </Button>
+      </div>
+
       <Card className="w-full max-w-md bg-white rounded-t-xl md:rounded-xl max-h-[90vh] overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 border-b">
           <CardTitle className="text-lg font-semibold">Nueva Entrada</CardTitle>
           <Button
             variant="ghost"
             size="sm"
-            onClick={onClose}
+            onClick={() => closeForm()}
             className="h-8 w-8 p-0"
           >
             <X className="w-4 h-4" />
@@ -111,32 +112,46 @@ export function EntryForm({ open, onClose, onSubmit }: EntryFormProps) {
             {/* Vehículo */}
             <div className="space-y-2">
               <Label htmlFor="vehiculo">Vehículo</Label>
-              <Input
-                id="vehiculo"
-                placeholder="ej. Taxi #45"
-                value={formData.Vehículo}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, Vehículo: e.target.value }))
+
+              <Select
+                value={formData.Vehiculo}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    Vehiculo: value,
+                  }))
                 }
-                required
-              />
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Seleccionar vehículo" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="EON Gris">EON Gris</SelectItem>
+                  <SelectItem value="I10 Rojo">I10 Rojo</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Conductor */}
             <div className="space-y-2">
               <Label htmlFor="conductor">Conductor</Label>
-              <Input
-                id="conductor"
-                placeholder="ej. Juan Pérez"
+              <Select
                 value={formData.Conductor}
-                onChange={(e) =>
+                onValueChange={(value) =>
                   setFormData((prev) => ({
                     ...prev,
-                    Conductor: e.target.value,
+                    Conductor: value,
                   }))
                 }
-                required
-              />
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Seleccionar conductor" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Ingreso">Luis</SelectItem>
+                  <SelectItem value="Gasto">Edwin</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Tipo de movimiento */}
@@ -144,14 +159,14 @@ export function EntryForm({ open, onClose, onSubmit }: EntryFormProps) {
               <Label>Tipo de movimiento</Label>
               <Select
                 value={formData["Tipo de movimiento"]}
-                onValueChange={(value: "Ingreso" | "Gasto") =>
+                onValueChange={(value) =>
                   setFormData((prev) => ({
                     ...prev,
-                    "Tipo de movimiento": value,
+                    "Tipo de movimiento": value as Entry["Tipo de movimiento"],
                   }))
                 }
               >
-                <SelectTrigger>
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder="Seleccionar tipo" />
                 </SelectTrigger>
                 <SelectContent>
@@ -172,7 +187,10 @@ export function EntryForm({ open, onClose, onSubmit }: EntryFormProps) {
                 placeholder="0.00"
                 value={formData.Monto}
                 onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, Monto: e.target.value }))
+                  setFormData((prev) => ({
+                    ...prev,
+                    Monto: Number(e.target.value),
+                  }))
                 }
                 required
               />
@@ -184,11 +202,11 @@ export function EntryForm({ open, onClose, onSubmit }: EntryFormProps) {
               <Textarea
                 id="descripcion"
                 placeholder="ej. Compra de combustible"
-                value={formData.Descripción}
+                value={formData.Descripcion}
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
-                    Descripción: e.target.value,
+                    Descripcion: e.target.value,
                   }))
                 }
                 rows={3}
@@ -200,7 +218,7 @@ export function EntryForm({ open, onClose, onSubmit }: EntryFormProps) {
               <Button
                 type="button"
                 variant="outline"
-                onClick={onClose}
+                onClick={() => closeForm()}
                 className="flex-1 bg-transparent"
                 disabled={isSubmitting}
               >
@@ -217,6 +235,7 @@ export function EntryForm({ open, onClose, onSubmit }: EntryFormProps) {
           </form>
         </CardContent>
       </Card>
+      {isSubmitting && <Loader />}
     </div>
   );
 }
