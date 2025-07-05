@@ -13,15 +13,12 @@ export default function MobileBottomNav() {
 
   return (
     <>
-      {/* Nav principal */}
       <nav className="fixed bottom-0 inset-x-0 h-16 bg-white border-t flex justify-around items-center safe-bottom md:hidden z-50">
-        {/* Home */}
         <Link href="/" className="flex flex-col items-center text-gray-600">
           <Home className="w-6 h-6" />
           <span className="text-xs">Inicio</span>
         </Link>
 
-        {/* Reportes */}
         <button
           onClick={() => setShowReports((prev) => !prev)}
           className="flex flex-col items-center text-gray-600 relative"
@@ -30,7 +27,6 @@ export default function MobileBottomNav() {
           <span className="text-xs">Reportes</span>
         </button>
 
-        {/* Nueva entrada */}
         <button
           onClick={() => openForm()}
           className="flex flex-col items-center text-gray-600"
@@ -47,7 +43,7 @@ export default function MobileBottomNav() {
             <button
               onClick={() => {
                 setShowReports(false);
-                router.push("/reports/drivers");
+                router.push("/reports/driver");
               }}
               className="flex-1 py-3 text-center hover:bg-gray-100"
             >
@@ -56,7 +52,7 @@ export default function MobileBottomNav() {
             <button
               onClick={() => {
                 setShowReports(false);
-                router.push("/reports/vehicles");
+                router.push("/reports/vehicle");
               }}
               className="flex-1 py-3 text-center hover:bg-gray-100"
             >
