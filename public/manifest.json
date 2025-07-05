@@ -1,6 +1,6 @@
 {
-  "name": "Money Tracker",
-  "short_name": "MoneyTracker",
+  "name": "Taxi Tracker",
+  "short_name": "TaxiTracker",
   "description": "Aplicación minimalista para gestionar ingresos y gastos",
   "start_url": "/",
   "display": "standalone",
