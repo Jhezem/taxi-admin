@@ -1,24 +1,73 @@
 "use client";
 
-import React from "react";
-import { Button } from "./ui/button";
-import { Plus } from "lucide-react";
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useFormStore } from "@/store/form";
+import { Home, BarChart, Plus } from "lucide-react";
 
-const Footer = () => {
+export default function MobileBottomNav() {
+  const router = useRouter();
   const { openForm } = useFormStore();
+  const [showReports, setShowReports] = useState(false);
 
   return (
-    <div className="fixed bottom-6 inset-x-0 flex justify-center md:hidden">
-      <Button
-        onClick={() => openForm()}
-        size="lg"
-        className="w-14 h-14 rounded-full bg-black hover:bg-gray-800 shadow-lg"
-      >
-        <Plus className="w-6 h-6" />
-      </Button>
-    </div>
-  );
-};
+    <>
+      {/* Nav principal */}
+      <nav className="fixed bottom-0 inset-x-0 h-16 bg-white border-t flex justify-around items-center safe-bottom md:hidden z-50">
+        {/* Home */}
+        <Link href="/" className="flex flex-col items-center text-gray-600">
+          <Home className="w-6 h-6" />
+          <span className="text-xs">Inicio</span>
+        </Link>
 
-export default Footer;
+        {/* Reportes */}
+        <button
+          onClick={() => setShowReports((prev) => !prev)}
+          className="flex flex-col items-center text-gray-600 relative"
+        >
+          <BarChart className="w-6 h-6" />
+          <span className="text-xs">Reportes</span>
+        </button>
+
+        {/* Nueva entrada */}
+        <button
+          onClick={() => openForm()}
+          className="flex flex-col items-center text-gray-600"
+        >
+          <Plus className="w-6 h-6" />
+          <span className="text-xs">Agregar</span>
+        </button>
+      </nav>
+
+      {/* Submenu de reportes */}
+      {showReports && (
+        <div className="fixed bottom-16 inset-x-0 bg-white border-t border-b shadow-md md:hidden z-40">
+          <div className="flex">
+            <button
+              onClick={() => {
+                setShowReports(false);
+                router.push("/reports/drivers");
+              }}
+              className="flex-1 py-3 text-center hover:bg-gray-100"
+            >
+              Por Conductor
+            </button>
+            <button
+              onClick={() => {
+                setShowReports(false);
+                router.push("/reports/vehicles");
+              }}
+              className="flex-1 py-3 text-center hover:bg-gray-100"
+            >
+              Por Vehículo
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Safe area spacer para notch */}
+      <div className="h-6 safe-bottom md:hidden" />
+    </>
+  );
+}
