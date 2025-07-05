@@ -58,8 +58,10 @@ export function EntryForm() {
         closeForm();
         router.refresh();
       })
-      .catch((error) => console.error("Error al enviar entrada:", error))
-      .finally(() => setIsSubmitting(false));
+      .catch((error) => {
+        console.error("Error al enviar entrada:", error);
+        setIsSubmitting(false);
+      });
   };
 
   if (!isOpen) return null;
