@@ -92,6 +92,7 @@ export function EntryForm() {
                   setFormData((prev) => ({ ...prev, Fecha: e.target.value }))
                 }
                 required
+                className="relative"
               />
             </div>
 

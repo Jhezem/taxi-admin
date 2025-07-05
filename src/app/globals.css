@@ -119,6 +119,24 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  input[type="date"] {
+    padding-right: 2.5rem;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  input[type="date"]::-moz-clear,
+  input[type="date"]::-moz-inner-spin-button {
+    display: none;
+  }
 }
 
 .loader {
