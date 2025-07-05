@@ -171,7 +171,7 @@ export function EntryForm() {
                 step="0.01"
                 min="0"
                 placeholder="0.00"
-                value={formData.Monto}
+                value={formData.Monto === 0 ? "" : formData.Monto}
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
