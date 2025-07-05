@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ServiceWorkerRegister from "@/components/service-worker";
+import Header from "@/components/header";
+import { EntryForm } from "@/components/entry-form";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,8 +12,6 @@ export const metadata: Metadata = {
   title: "Money Tracker",
   description: "Aplicación minimalista para gestionar ingresos y gastos",
   manifest: "/manifest.json",
-  viewport:
-    "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -37,8 +37,12 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       </head>
-      <body className={inter.className}>
-        {children}
+      <body className={`${inter.className} min-h-screen bg-gray-50`}>
+        <main className="px-4 py-6 max-w-md mx-auto">
+          <Header />
+          {children}
+          <EntryForm />
+        </main>
         <ServiceWorkerRegister />
       </body>
     </html>
