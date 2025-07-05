@@ -18,7 +18,7 @@ declare module "pulltorefreshjs" {
     onPullStart?: () => void;
     onPullMove?: (distance: number) => void;
     onPullEnd?: () => void;
-    [key: string]: any;
+    [key: string]: unknown;
   }
 
   export function init(opts: PullToRefreshOptions): void;
