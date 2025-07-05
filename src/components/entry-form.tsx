@@ -16,15 +16,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Entry } from "../types/formData";
-import { addEntryAction } from "../utils/api";
-import { useFormStore } from "../store/form";
+import { Entry } from "@/types/formData";
+import { addEntryAction } from "@/utils/api";
+import { useFormStore } from "@/store/form";
 import { useRouter } from "next/navigation";
 import Loader from "./ui/loader";
+import { getLocalYYYYMMDD } from "@/utils";
 
 export function EntryForm() {
   const [formData, setFormData] = useState<Entry>({
-    Fecha: new Date().toISOString().split("T")[0],
+    Fecha: getLocalYYYYMMDD(),
     Vehiculo: "",
     Conductor: "",
     "Tipo de movimiento": "",
