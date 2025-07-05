@@ -1,31 +1,26 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import { useEffect } from "react";
+import PullToRefresh from "pulltorefreshjs";
 import { useRouter } from "next/navigation";
-import { Fragment, type ReactNode } from "react";
-import LastMovementsSkeleton from "./last-movements-skeleton";
-import BalanceCardSkeleton from "./balance-card-skeleton";
 
-interface Props {
-  children: ReactNode;
-}
-
-const PullToRefresh = dynamic(() => import("react-pull-to-refresh"), {
-  ssr: false,
-  loading: () => (
-    <Fragment>
-      <BalanceCardSkeleton />
-      <LastMovementsSkeleton />
-    </Fragment>
-  ),
-});
-
-export default function PullToRefreshWrapper({ children }: Props) {
+export default function PullToRefreshComponent() {
   const router = useRouter();
+  useEffect(() => {
+    PullToRefresh.init({
+      mainElement: "body",
+      onRefresh() {
+        router.refresh();
+      },
+      instructionsPullToRefresh: "↓ Desliza para refrescar",
+      instructionsReleaseToRefresh: "↑ Suelta para refrescar",
+      instructionsRefreshing: "⟳ Actualizando…",
+    });
 
-  const handleRefresh = async () => {
-    router.refresh();
-  };
+    return () => {
+      PullToRefresh.destroyAll();
+    };
+  }, []);
 
-  return <PullToRefresh onRefresh={handleRefresh}>{children}</PullToRefresh>;
+  return null;
 }
