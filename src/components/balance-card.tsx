@@ -15,7 +15,7 @@ const BalanceCard = () => {
       <CardContent className="pt-0">
         <div className="text-3xl font-bold text-gray-900">
           C$
-          {total.balance?.toLocaleString("es-ES", {
+          {total.balance?.toLocaleString("en-US", {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           })}
