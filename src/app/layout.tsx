@@ -5,6 +5,7 @@ import "./globals.css";
 import ServiceWorkerRegister from "@/components/service-worker";
 import Header from "@/components/header";
 import { EntryForm } from "@/components/entry-form";
+import MobileBottomNav from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -44,6 +45,7 @@ export default function RootLayout({
           <EntryForm />
         </main>
         <ServiceWorkerRegister />
+        <MobileBottomNav />
       </body>
     </html>
   );
