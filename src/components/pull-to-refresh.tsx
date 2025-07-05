@@ -8,13 +8,15 @@ export default function PullToRefreshComponent() {
   const router = useRouter();
   useEffect(() => {
     PullToRefresh.init({
-      mainElement: "body",
+      mainElement: "main",
+      triggerElement: "header",
       onRefresh() {
         router.refresh();
       },
       instructionsPullToRefresh: "↓ Desliza para refrescar",
       instructionsReleaseToRefresh: "↑ Suelta para refrescar",
       instructionsRefreshing: "⟳ Actualizando…",
+      distThreshold: 60,
     });
 
     return () => {
