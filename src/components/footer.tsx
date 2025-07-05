@@ -9,7 +9,7 @@ const Footer = () => {
   const { openForm } = useFormStore();
 
   return (
-    <div className="fixed bottom-6 right-6 md:hidden">
+    <div className="fixed bottom-6 inset-x-0 flex justify-center md:hidden">
       <Button
         onClick={() => openForm()}
         size="lg"
