@@ -1,9 +1,10 @@
 "use server";
 
 import { Entry } from "../types/formData";
+import { DriverIncome, VehicleIncome } from "../types/reports";
 
 const SHEET_EP =
-  "https://script.google.com/macros/s/AKfycbwgtBq7Hgprbhvz7Iz39HkTRxUXRGNHbHyr4-BzMya2qVO0U9zFXIYENj3hQ4CSFcgmXg/exec";
+  "https://script.google.com/macros/s/AKfycbwawMhSRhwDfPm_GAc0cxtlTn5_vWbsD7TkDmnmJpNDcKWqjdATq-8SPGtADTpaBX3uVQ/exec";
 
 export async function addEntryAction(entry: Entry) {
   const res = await fetch(SHEET_EP, {
@@ -33,3 +34,41 @@ export const getAllMovements = async () =>
   })
     .then((res) => res.json())
     .catch(() => []);
+
+export const getIncomeByDriver = async (
+  start: string,
+  end: string,
+  driver?: string
+): Promise<DriverIncome[]> => {
+  const url = new URL(SHEET_EP);
+  url.searchParams.set("report", "drivers");
+  url.searchParams.set("start", start);
+  url.searchParams.set("end", end);
+  if (driver && driver !== "todos") url.searchParams.set("driver", driver);
+
+  const res = await fetch(url.toString(), { next: { revalidate: 0 } });
+  if (!res.ok) {
+    console.error("Error fetching driver report", res.statusText);
+    return [];
+  }
+  return res.json();
+};
+
+export const getIncomeByVehicle = async (
+  start: string,
+  end: string,
+  vehicle?: string
+): Promise<VehicleIncome[]> => {
+  const url = new URL(SHEET_EP);
+  url.searchParams.set("report", "vehicles");
+  url.searchParams.set("start", start);
+  url.searchParams.set("end", end);
+  if (vehicle && vehicle !== "todos") url.searchParams.set("vehicle", vehicle);
+
+  const res = await fetch(url.toString(), { next: { revalidate: 0 } });
+  if (!res.ok) {
+    console.error("Error fetching vehicle report", res.statusText);
+    return [];
+  }
+  return res.json();
+};
