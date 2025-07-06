@@ -1,8 +1,8 @@
-import LastMovements from "@/components/last-movements";
-import BalanceCard from "@/components/balance-card";
-import PullToRefreshComponent from "@/components/pull-to-refresh";
+import LastMovements from "@/components/features/movements/LastMovements";
+import BalanceCard from "@/components/features/balance/BalanceCard";
+import PullToRefreshComponent from "@/components/layout/PullToRefresh";
 import { Suspense } from "react";
-import PageSkeleton from "@/components/page-skeleton";
+import PageSkeleton from "@/components/layout/PageSkeleton";
 
 export default function Home() {
   return (
