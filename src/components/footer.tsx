@@ -13,7 +13,7 @@ export default function MobileBottomNav() {
 
   return (
     <>
-      <nav className="fixed bottom-0 inset-x-0 h-16 bg-white border-t flex justify-around items-center safe-bottom md:hidden z-50">
+      <nav className="fixed bottom-0 inset-x-0 h-16 bg-white border-t flex justify-around items-center safe-bottom md:hidden z-40">
         <Link href="/" className="flex flex-col items-center text-gray-600">
           <Home className="w-6 h-6" />
           <span className="text-xs">Inicio</span>

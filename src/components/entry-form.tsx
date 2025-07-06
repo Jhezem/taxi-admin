@@ -67,7 +67,7 @@ export function EntryForm() {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-60 flex items-end md:items-center justify-center p-4">
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center p-4">
       <Card className="w-full max-w-md bg-white rounded-t-xl md:rounded-xl max-h-[90vh] overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 border-b">
           <CardTitle className="text-lg font-semibold">Nueva Entrada</CardTitle>
