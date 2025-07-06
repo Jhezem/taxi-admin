@@ -6,6 +6,7 @@ import ServiceWorkerRegister from "@/components/service-worker";
 import Header from "@/components/header";
 import { EntryForm } from "@/components/entry-form";
 import MobileBottomNav from "@/components/footer";
+import { cookies } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,11 +27,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = await cookies();
+  const sessionToken = cookieStore.get("session-token");
+
   return (
     <html lang="es">
       <head>
@@ -40,12 +44,12 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} min-h-screen bg-gray-50`}>
         <main className="px-4 py-6 max-w-md mx-auto">
-          <Header />
+          {sessionToken && <Header />}
           {children}
           <EntryForm />
         </main>
         <ServiceWorkerRegister />
-        <MobileBottomNav />
+        {sessionToken && <MobileBottomNav />}
       </body>
     </html>
   );
