@@ -1,4 +1,4 @@
-import { LoginForm } from "@/components/login-form";
+import { LoginForm } from "@/components/features/auth/LoginForm";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import { redirect } from "next/navigation";

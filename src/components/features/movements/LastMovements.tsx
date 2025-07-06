@@ -1,7 +1,7 @@
 import { Fragment, use } from "react";
-import { Card, CardContent } from "./ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { getAllMovements } from "@/utils/api";
-import NoMovements from "./no-movements";
+import NoMovements from "./NoMovements";
 import { Entry } from "@/types/formData";
 
 export default function LastMovements() {

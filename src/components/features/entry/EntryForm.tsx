@@ -20,7 +20,7 @@ import { Entry } from "@/types/formData";
 import { addEntryAction } from "@/utils/api";
 import { useFormStore } from "@/store/form";
 import { useRouter } from "next/navigation";
-import Loader from "./ui/loader";
+import Loader from "@/components/ui/loader";
 import { getLocalYYYYMMDD } from "@/utils";
 
 export function EntryForm() {

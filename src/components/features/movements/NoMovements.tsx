@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { Button } from "./ui/button";
-import { useFormStore } from "../store/form";
+import { Button } from "@/components/ui/button";
+import { useFormStore } from "@/store/form";
 import { Plus } from "lucide-react";
 
 const NoMovements = () => {

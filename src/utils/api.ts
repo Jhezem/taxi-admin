@@ -1,7 +1,7 @@
 "use server";
 
-import { Entry } from "../types/formData";
-import { DriverIncome, VehicleIncome } from "../types/reports";
+import { Entry } from "@/types/formData";
+import { DriverIncome, VehicleIncome } from "@/types/reports";
 
 const SHEET_EP =
   "https://script.google.com/macros/s/AKfycbwawMhSRhwDfPm_GAc0cxtlTn5_vWbsD7TkDmnmJpNDcKWqjdATq-8SPGtADTpaBX3uVQ/exec";

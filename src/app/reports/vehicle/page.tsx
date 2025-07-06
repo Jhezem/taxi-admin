@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import PageSkeleton from "@/components/page-skeleton";
+import PageSkeleton from "@/components/layout/PageSkeleton";
 
 export default function VehicleReportView() {
   const [data, setData] = useState<VehicleIncome[]>([]);

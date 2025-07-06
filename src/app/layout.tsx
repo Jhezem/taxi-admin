@@ -2,10 +2,10 @@ import type React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import ServiceWorkerRegister from "@/components/service-worker";
-import Header from "@/components/header";
-import { EntryForm } from "@/components/entry-form";
-import MobileBottomNav from "@/components/footer";
+import ServiceWorkerRegister from "@/components/layout/ServiceWorker";
+import Header from "@/components/layout/Header";
+import { EntryForm } from "@/components/features/entry/EntryForm";
+import MobileBottomNav from "@/components/layout/Footer";
 import { cookies } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
