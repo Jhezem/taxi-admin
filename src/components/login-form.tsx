@@ -23,6 +23,7 @@ export function LoginForm() {
         setError(result.error || "Error al iniciar sesión");
       }
     } catch (error) {
+      console.log("Error while login in", error);
       setError("Error de conexión. Intenta nuevamente.");
     } finally {
       setIsLoading(false);

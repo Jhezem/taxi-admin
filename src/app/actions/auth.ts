@@ -77,6 +77,7 @@ export async function verifySession() {
     const { payload } = await jwtVerify(token.value, JWT_SECRET);
     return payload;
   } catch (error) {
+    console.log("error verifying token", error);
     cookieStore.delete("session-token");
     return null;
   }
