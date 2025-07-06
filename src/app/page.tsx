@@ -1,11 +1,12 @@
 import LastMovements from "@/components/last-movements";
 import BalanceCard from "@/components/balance-card";
-import PullToRefreshComponent from "../components/pull-to-refresh";
-import { Fragment } from "react";
+import PullToRefreshComponent from "@/components/pull-to-refresh";
+import { Suspense } from "react";
+import PageSkeleton from "@/components/page-skeleton";
 
 export default function Home() {
   return (
-    <Fragment>
+    <Suspense fallback={<PageSkeleton />}>
       {/* Main Content */}
       <PullToRefreshComponent />
 
@@ -14,6 +15,6 @@ export default function Home() {
 
       {/* Recent Entries */}
       <LastMovements />
-    </Fragment>
+    </Suspense>
   );
 }
