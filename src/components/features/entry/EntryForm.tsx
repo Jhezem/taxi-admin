@@ -19,7 +19,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Entry } from "@/types/formData";
 import { addEntryAction } from "@/utils/api";
 import { useFormStore } from "@/store/form";
-import { useRouter } from "next/navigation";
 import Loader from "@/components/ui/loader";
 import { getLocalYYYYMMDD } from "@/utils";
 
@@ -33,7 +32,6 @@ export function EntryForm() {
     Descripcion: "",
   });
   const { isOpen, closeForm } = useFormStore();
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -55,8 +53,7 @@ export function EntryForm() {
           Monto: 0,
           Descripcion: "",
         });
-        closeForm();
-        router.refresh();
+        window.location.reload(); // hard refresh to clear page state
       })
       .catch((error) => {
         console.error("Error al enviar entrada:", error);
@@ -138,7 +135,7 @@ export function EntryForm() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Luis">Luis</SelectItem>
-                  <SelectItem value="Edwin">Edwin</SelectItem>
+                  <SelectItem value="David">David</SelectItem>
                 </SelectContent>
               </Select>
             </div>
