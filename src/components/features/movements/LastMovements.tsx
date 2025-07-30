@@ -16,7 +16,7 @@ export default function LastMovements() {
     return db - da;
   });
 
-  const latests = sorted.slice(0, 5); // ultimos 5
+  const latests = sorted.slice(0, 10); // ultimos 10
 
   return (
     <Fragment>
