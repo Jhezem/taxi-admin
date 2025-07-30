@@ -136,6 +136,7 @@ export function EntryForm() {
                 <SelectContent>
                   <SelectItem value="Luis">Luis</SelectItem>
                   <SelectItem value="David">David</SelectItem>
+                  <SelectItem value="Neiki">Neiki</SelectItem>
                 </SelectContent>
               </Select>
             </div>

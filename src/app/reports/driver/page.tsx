@@ -75,6 +75,7 @@ export default function DriversReportView() {
                 <SelectItem value="Luis">Luis</SelectItem>
                 <SelectItem value="Edwin">Edwin</SelectItem>
                 <SelectItem value="David">David</SelectItem>
+                <SelectItem value="Neiki">Neiki</SelectItem>
               </SelectContent>
             </Select>
 
